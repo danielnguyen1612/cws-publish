@@ -18,6 +18,7 @@ func InitLogging() *zap.Logger {
 	}
 
 	viper.SetDefault("log.level", zap.DebugLevel.String())
+	viper.SetDefault("log.timestamp", true)
 
 	var (
 		level    zapcore.Level
