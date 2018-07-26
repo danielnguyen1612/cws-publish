@@ -32,19 +32,22 @@ Here's how to get its 3 access keys: `clientId`, `clientSecret`, `refreshToken`
 0. Save your ✅ `clientId` and ✅ `clientSecret`, these are your keys.
 0. Place your `clientId` in this URL and open it:
 
-        https://accounts.google.com/o/oauth2/auth?client_id=YOUR_CLIENT_ID&response_type=code&scope=https://www.googleapis.com/auth/chromewebstore&redirect_uri=urn:ietf:wg:oauth:2.0:oob
+        https://accounts.google.com/o/oauth2/auth?client_id=YOUR_CLIENT_ID&response_type=code&scope=https://www.googleapis.com/auth/chromewebstore&access_type=offline&redirect_uri=urn:ietf:wg:oauth:2.0:oob
 
 0. Follow its steps and copy the `authcode` it shows on the last page:
 
     > <img width="400" alt="auth code" src="https://cloud.githubusercontent.com/assets/1402241/21518094/c3033bb0-cc98-11e6-82bb-f6c69ca103fe.png">
 
-0. Run this in your browser console.  
-It's a wizard to create and copy a `curl` into your clipboard:
+0. Run this in your terminal console. 
+```$shell
+curl -X POST \
+  https://www.googleapis.com/oauth2/v4/token \
+  -H 'Cache-Control: no-cache' \
+  -H 'Content-Type: application/x-www-form-urlencoded' \
+  -H 'Postman-Token: 6e25fe5b-da32-4b69-9985-15fa74463cd6' \
+  -d 'client_id=YOUR_CLIENT_ID&client_secret=YOUR_CLIENT_SECRET&code=CODE_AT_PREVIOUS_STEP&grant_type=authorization_code&redirect_uri=urn%3Aietf%3Awg%3Aoauth%3A2.0%3Aoob'
+```
 
-        copy(`curl "https://accounts.google.com/o/oauth2/token" -d "client_id=${encodeURIComponent(prompt('Enter your clientId'))}&client_secret=${encodeURIComponent(prompt('Enter your clientSecret'))}&code=${encodeURIComponent(prompt('Enter your authcode'))}&grant_type=authorization_code&redirect_uri=urn:ietf:wg:oauth:2.0:oob"`);alert('The curl has been copied. Paste it into your terminal.')
-
-
-0. Paste the generated code in your terminal and run it.
 0. Save your ✅ `refreshToken`:
 
     <img width="400" alt="access token" src="https://cloud.githubusercontent.com/assets/1402241/21518331/9b7e3b42-cc9a-11e6-8d65-cde5ba5ea105.png">

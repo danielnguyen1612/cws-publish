@@ -1,6 +1,7 @@
 package store_config
 
 import (
+	"encoding/json"
 	"fmt"
 	"io"
 	"io/ioutil"
@@ -9,7 +10,6 @@ import (
 	"path/filepath"
 	"strings"
 
-	"encoding/json"
 	"github.com/pkg/errors"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
