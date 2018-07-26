@@ -2,7 +2,7 @@ version: 2
 defaults:
   working_directory: /go/src/github.com/anhnguyentb/cws-publish
 jobs:
-  dep:
+  build:
     docker:
     - image: instrumentisto/dep
     #      - image: docker:17.05.0-ce-git
@@ -24,11 +24,3 @@ jobs:
 
     ### Build
     - run: go build -o /go/bin/cws-publish -v
-workflows:
-  version: 2
-  build-test-and-deploy:
-    jobs:
-    - dep
-    - gobuild:
-        requires:
-        - dep
