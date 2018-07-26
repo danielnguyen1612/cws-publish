@@ -16,12 +16,12 @@ jobs:
     - run:
         name: Run dep to install dependencies
         command: |
-        # create a dummy container which will hold a volume with code
-        docker create -v /go/src/github.com/anhnguyentb/cws-publish --name go-dep alpine:3.4 /bin/bash
-        docker cp /go/src/github.com/anhnguyentb/cws-publish/. go-dep:/go/src/github.com/anhnguyentb/cws-publish
-        # start an application container using this volume
-        docker run --rm --workdir /go/src/github.com/anhnguyentb/cws-publish --volumes-from go-dep:z instrumentisto/dep ensure -v
-        docker cp go-dep:/go/src/github.com/anhnguyentb/cws-publish/vendor /go/src/github.com/anhnguyentb/cws-publish
+          # create a dummy container which will hold a volume with code
+          docker create -v /go/src/github.com/anhnguyentb/cws-publish --name go-dep alpine:3.4 /bin/bash
+          docker cp /go/src/github.com/anhnguyentb/cws-publish/. go-dep:/go/src/github.com/anhnguyentb/cws-publish
+          # start an application container using this volume
+          docker run --rm --workdir /go/src/github.com/anhnguyentb/cws-publish --volumes-from go-dep:z instrumentisto/dep ensure -v
+          docker cp go-dep:/go/src/github.com/anhnguyentb/cws-publish/vendor /go/src/github.com/anhnguyentb/cws-publish
 
     - run:
         name: Run go test
@@ -34,9 +34,9 @@ jobs:
     - run:
         name: Publish to Docker Hub
         command: |
-        if [ "${CIRCLE_BRANCH}" == "master" ]; then
-          TAG=0.1.$CIRCLE_BUILD_NUM
-          docker build -t $DOCKER_REGISTRY:$TAG .
-          docker login -u $DOCKER_USER -p $DOCKER_PASS
-          docker push $DOCKER_REGISTRY:$TAG
-        fi
+          if [ "${CIRCLE_BRANCH}" == "master" ]; then
+            TAG=0.1.$CIRCLE_BUILD_NUM
+            docker build -t $DOCKER_REGISTRY:$TAG .
+            docker login -u $DOCKER_USER -p $DOCKER_PASS
+            docker push $DOCKER_REGISTRY:$TAG
+          fi
