@@ -1,21 +1,33 @@
 version: 2
+defaults:
+  working_directory: /go/src/github.com/anhnguyentb/cws-publish
 jobs:
-  build:
+  dep:
     docker:
-      - image: docker:17.05.0-ce-git
-      # specify the version
-      - image: circleci/golang:1.9
+    - image: instrumentisto/dep
+    #      - image: docker:17.05.0-ce-git
+    #      - image: circleci/golang:1.9
 
-    working_directory: /go/src/github.com/anhnguyentb/cws-publish
     steps:
-      - checkout
-      - setup_remote_docker
+    - checkout
+    #      - setup_remote_docker
 
-      #### Run dep
-      - run: docker run --rm -v ${pwd}:/go/src/github.com/anhnguyentb/cws-publish -w /go/src/github.com/anhnguyentb/cws-publish instrumentisto/dep ensure
+    #### Run dep
+    - run: dep ensure -v
+  gobuild:
+    docker:
+    - image: circleci/golang:1.9
+    steps:
+    ### Run test
+    - run: go test -v ./...
 
-      ### Run test
-      - run: go test -v ./...
-
-      ### Build
-      - run: go build -o /go/bin/profiles -v
+    ### Build
+    - run: go build -o /go/bin/cws-publish -v
+workflows:
+  version: 2
+  build-test-and-deploy:
+    jobs:
+      - dep
+      - gobuild:
+          requires:
+            - dep
