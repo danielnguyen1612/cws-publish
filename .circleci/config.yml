@@ -7,7 +7,7 @@ jobs:
     - image: instrumentisto/dep
     #      - image: docker:17.05.0-ce-git
     #      - image: circleci/golang:1.9
-
+    working_directory: /go/src/github.com/anhnguyentb/cws-publish
     steps:
     - checkout
     #      - setup_remote_docker
@@ -17,6 +17,7 @@ jobs:
   gobuild:
     docker:
     - image: circleci/golang:1.9
+    working_directory: /go/src/github.com/anhnguyentb/cws-publish
     steps:
     ### Run test
     - run: go test -v ./...
@@ -27,7 +28,7 @@ workflows:
   version: 2
   build-test-and-deploy:
     jobs:
-      - dep
-      - gobuild:
-          requires:
-            - dep
+    - dep
+    - gobuild:
+        requires:
+        - dep
