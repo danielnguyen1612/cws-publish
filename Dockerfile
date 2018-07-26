@@ -1,5 +1,5 @@
-FROM golang:1.10.3
+FROM golang:1.9
 
-COPY bin/cws-publish /usr/local/bin/
+COPY /go/bin/cws-publish /usr/local/bin/
 
 ENTRYPOINT ["/usr/local/bin/cws-publish"]
