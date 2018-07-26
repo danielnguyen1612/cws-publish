@@ -2,7 +2,7 @@ version: 2
 jobs:
   build:
     docker:
-      - image: circleci/golang:1.10.3
+    - image: circleci/golang:1.10.3
 
     environment:
       DOCKER_REGISTRY: anhnguyentb90/cws-publish
@@ -13,8 +13,9 @@ jobs:
     - checkout
     - setup_remote_docker
 
-    #### Run dep
-    - run: |
+    - run:
+        name: Run dep to install dependencies
+        command: |
         # create a dummy container which will hold a volume with code
         docker create -v /go/src/github.com/anhnguyentb/cws-publish --name go-dep alpine:3.4 /bin/bash
         docker cp /go/src/github.com/anhnguyentb/cws-publish/. go-dep:/go/src/github.com/anhnguyentb/cws-publish
@@ -22,14 +23,17 @@ jobs:
         docker run --rm --workdir /go/src/github.com/anhnguyentb/cws-publish --volumes-from go-dep:z instrumentisto/dep ensure -v
         docker cp go-dep:/go/src/github.com/anhnguyentb/cws-publish/vendor /go/src/github.com/anhnguyentb/cws-publish
 
-    ### Run test
-    - run: go test -v ./...
+    - run:
+        name: Run go test
+        command: go test -v ./...
 
-    ### Build
-    - run: go build -o /go/bin/cws-publish -v
+    - run:
+        name: Build binary file
+        command: go build -o bin/cws-publish -v
 
-    ### Publish to Docker hub
-    - run: |
+    - run:
+        name: Publish to Docker Hub
+        command: |
         if [ "${CIRCLE_BRANCH}" == "master" ]; then
           TAG=0.1.$CIRCLE_BUILD_NUM
           docker build -t $DOCKER_REGISTRY:$TAG .
