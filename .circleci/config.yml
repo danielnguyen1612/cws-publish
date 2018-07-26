@@ -39,5 +39,5 @@ jobs:
             docker build -t $DOCKER_REGISTRY .
             docker tag $DOCKER_REGISTRY $DOCKER_REGISTRY:$TAG
             docker login -u $DOCKER_USER -p $DOCKER_PASS
-            docker push $DOCKER_REGISTRY:$TAG
+            docker push $DOCKER_REGISTRY
           fi
