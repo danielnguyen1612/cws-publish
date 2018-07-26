@@ -5,7 +5,6 @@ jobs:
       - image: docker:17.05.0-ce-git
       # specify the version
       - image: circleci/golang:1.9
-      - image: instrumentisto/dep
 
     working_directory: /go/src/github.com/anhnguyentb/cws-publish
     steps:
@@ -13,7 +12,7 @@ jobs:
       - setup_remote_docker
 
       #### Run dep
-      - run: docker run --rm -v ${pwd}:/go/src/github.com/anhnguyentb/cws-publish -w /go/src/github.com/anhnguyentb/cws-publish instrumentisto/dep ensure
+      - run: docker run --rm -v ${pwd}:/go/src/my/pkg/name -w /go/src/my/pkg/name instrumentisto/dep ensure
 
       ### Run test
       - run: go test -v ./...
