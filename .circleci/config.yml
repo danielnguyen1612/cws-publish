@@ -11,7 +11,7 @@ jobs:
       - checkout
 
       #### Run dep
-      - run: docker run --rm -v ${pwd}:/go/src/github.com/anhnguyentb/cws-publish -w /go/src/github.com/anhnguyentb/cws-publish
+      - run: docker run --rm -v ${pwd}:/go/src/github.com/anhnguyentb/cws-publish -w /go/src/github.com/anhnguyentb/cws-publish ensure
 
       ### Run test
       - run: go test -v ./...
