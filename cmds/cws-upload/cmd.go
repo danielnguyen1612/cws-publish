@@ -3,6 +3,7 @@ package cws_upload
 import (
 	"bytes"
 	"encoding/json"
+	"fmt"
 	"io"
 	"mime/multipart"
 	"net/http"
@@ -14,6 +15,7 @@ import (
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 	"go.uber.org/zap"
+	"go.uber.org/zap/zapcore"
 )
 
 const (
@@ -44,8 +46,28 @@ type AccessToken struct {
 type ItemResource struct {
 	ID          string
 	Kind        string
-	UploadState string   `json:"uploadState"`
-	ItemError   []string `json:"itemError"`
+	UploadState string      `json:"uploadState"`
+	ItemError   []ErrorItem `json:"itemError"`
+}
+
+type ErrorItem struct {
+	Code   string `json:"error_code"`
+	Detail string `json:"error_detail"`
+}
+
+func (i *ItemResource) LogFields() (field []zapcore.Field) {
+	field = []zapcore.Field{
+		zap.String("ID", i.ID),
+		zap.String("Kind", i.Kind),
+		zap.String("UploadState", i.UploadState),
+	}
+
+	for i, err := range i.ItemError {
+		field = append(field, zap.String(fmt.Sprintf("error_%d_code", i), err.Code))
+		field = append(field, zap.String(fmt.Sprintf("error_%d_detail", i), err.Detail))
+	}
+
+	return
 }
 
 func InitCommand(zapLogger *zap.Logger) *cobra.Command {
@@ -213,7 +235,7 @@ func fetchResponseFromCws(req *http.Request) error {
 	}
 
 	if resp.StatusCode != 200 {
-		return errors.New("Failed to upload")
+		return errors.New("Failed to request. Status code: " + string(resp.StatusCode))
 	}
 
 	decoder := json.NewDecoder(resp.Body)
@@ -222,14 +244,7 @@ func fetchResponseFromCws(req *http.Request) error {
 		return errors.Wrap(err, "decoder.Decode")
 	}
 
-	log.
-		With(
-			zap.String("ID", itemResource.ID),
-			zap.String("Kind", itemResource.Kind),
-			zap.String("UploadState", itemResource.UploadState),
-			zap.Strings("ItemError", itemResource.ItemError),
-		).
-		Debug("Request completed")
+	log.With(itemResource.LogFields()...).Debug("Request completed")
 
 	return nil
 }

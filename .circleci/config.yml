@@ -35,9 +35,8 @@ jobs:
         name: Publish to Docker Hub
         command: |
           if [ "${CIRCLE_BRANCH}" == "master" ]; then
-            TAG=0.1.$CIRCLE_BUILD_NUM
             docker build -t $DOCKER_REGISTRY .
-            docker tag $DOCKER_REGISTRY $DOCKER_REGISTRY:$TAG
+            docker tag $DOCKER_REGISTRY
             docker login -u $DOCKER_USER -p $DOCKER_PASS
             docker push $DOCKER_REGISTRY
           fi
