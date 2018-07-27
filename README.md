@@ -1,5 +1,5 @@
 # Chrome Web Store Upload & Publish Tools
-[![CircleCI](https://circleci.com/gh/anhnguyentb/cws-publish/tree/master.svg?style=svg)](https://circleci.com/gh/anhnguyentb/cws-publish/tree/master)
+[![CircleCI](https://circleci.com/gh/anhnguyentb/cws-publish/tree/master.svg?style=svg&circle-token=80813da8086353e407c6f1db6fe7310f1fe43f27)](https://circleci.com/gh/anhnguyentb/cws-publish/tree/master)
 
 A CLI program to upload/publish extensions to the [Chrome Web Store](https://chrome.google.com/webstore/category/extensions).
 
