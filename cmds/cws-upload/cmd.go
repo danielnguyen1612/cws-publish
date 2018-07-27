@@ -245,6 +245,9 @@ func fetchResponseFromCws(req *http.Request) error {
 	}
 
 	log.With(itemResource.LogFields()...).Debug("Request completed")
+	if itemResource.UploadState == "FAILURE" {
+		return errors.New("Failed to process")
+	}
 
 	return nil
 }
