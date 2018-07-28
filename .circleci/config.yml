@@ -2,7 +2,7 @@ version: 2
 jobs:
   build:
     docker:
-    - image: circleci/golang:1.10.3-stretch-node-browsers
+    - image: circleci/golang
 
     environment:
       DOCKER_REGISTRY: anhnguyentb90/cws-publish
@@ -29,7 +29,7 @@ jobs:
 
     - run:
         name: Build binary file
-        command: CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -o bin/cws-publish -v
+        command: GOOS=linux GOARCH=amd64 go build -o bin/cws-publish -v
 
     - run:
         name: Publish to Docker Hub
