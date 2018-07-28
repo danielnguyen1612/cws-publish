@@ -1,4 +1,4 @@
-FROM alpine:3.8
+FROM debian:stable
 
 COPY bin/cws-publish /usr/local/bin/
 
