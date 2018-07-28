@@ -1,4 +1,4 @@
-FROM alpine:3.8
+FROM golang:alpine
 
 COPY bin/cws-publish /usr/local/bin/
 
